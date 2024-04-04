@@ -74,7 +74,7 @@ public class DBConfig {
 	}
 	
 	/////////////////// Mybatis 설정 //////////////////////////
-	
+	@Bean
 	public SqlSessionFactory sessionFactory(DataSource dataSource) throws Exception {
 		
 		SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
@@ -99,7 +99,7 @@ public class DBConfig {
 		sessionFactoryBean.setTypeAliasesPackage("edu.kh.todo");
 		
 		// 마이바티스 설정 파일 경로 지정
-		sessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis-cnfig.xml"));
+		sessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis-config.xml"));
 		
 		// 설정 내용이 모두 적용된 객체 반환
 		return sessionFactoryBean.getObject();
