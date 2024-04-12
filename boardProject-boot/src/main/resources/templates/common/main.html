@@ -23,6 +23,9 @@
       <section class="content-2">
         <!-- 로그인, 회원가입 버튼 -->
 
+        <!--로그인이 되어있지 않은 경우-->
+        <th:block th:if="${session.loginMember == null}">
+
           <!-- 로그인 박스 -->
           <form action="/member/login" method="POST" id="loginForm">
             <fieldset class="id-pw-area">
@@ -46,6 +49,12 @@
   
             <label>
               <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
+              <!-- 쿠키와 세션 
+                   쿠키(cookie) : 클라이언트(브라우저)에 저장되는 작은 데이터 조각을 의미한다.(보안에 취약할 수 있다./만료기간 줄수 O)
+
+                   세션(Session) : 서버 측에서 사용자 상태 관리 (여러 세션 아이디를 가지고 있을 수 있다./ 서버 측에서 관리하고 있기떄문에 보안상 쿠키보다 안전함/ 만료기간 줄수 O)
+              
+              -->
               <input type="checkbox" name="saveId">
               아이디 저장
             </label>
@@ -60,6 +69,45 @@
   
           </form>
 
+        </th:block> <!--타임리프에서 제공하는 유일한 태그 : 해석되고 사라진다-->
+
+        <!-- 로그인이 되어있는 경우 -->
+        <!--<th:block th:unless="${session.loginMember == null}"></th:block>-->
+        <th:block th:if="${session.loginMember != null}">
+
+        <!-- 닉네임, 이메일, 로그아웃 버튼 영역-->
+        <div class="my-info" th:object="${session.loginMember}">
+
+          <article class="login-area"> <!--div랑 속성 똑같음-->
+            <a href="/mypage/profile">
+              <!-- 프로필 이미지-->
+  
+              <!--messages.properties에 작성된 기본 사용자 이미지
+                -> session.loginMember.profileImg 에 유저가 등록한 이미지가 있다면 (null이 아니라면)
+                 session.loginMember.profileImg에 저장된 이미지 경로( ex)../ex.png )를 쓰겠다.
+                 없다면(null 이라면) user(/images/user.png)
+              -->
+              <img th:with="user=#{user.default.image}"
+                   th:src="${session.loginMember.profileImg ?: user}"
+                   id="memberProfile"
+                   alt="프로필 이미지"> <!--th:with : 변수 만들기-->
+            </a>
+  
+            <!-- 닉네임, 이메일, 로그아웃 버튼 영역-->
+            <div class="my-info" th:object="${session.loginMember}">
+              <div>
+                <a href="/myPage/info" id="nickname" th:text="*{memberNickname}">닉네임</a>
+                <a href="/member/logout" id="logoutBtn">로그아웃</a>
+              </div>
+
+              <p th:text="*{memberEmail}">이메일</p>
+
+            </div>
+            
+          </article>
+
+        </th:block>
+
       </section>
 
     </section>
@@ -67,7 +115,7 @@
   
   <th:block th:replace="~{common/footer}"></th:block>
 
-  <scropt src="/js/main.js"></scropt>
+  <script src="/js/main.js"></script>
 
 </body>
 </html>
