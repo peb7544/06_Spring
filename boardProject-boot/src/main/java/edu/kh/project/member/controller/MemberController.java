@@ -1,10 +1,14 @@
 package edu.kh.project.member.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -180,6 +184,53 @@ public class MemberController {
 		ra.addFlashAttribute("message", message);
 		
 		return "redirect:" + path;
+	}
+	
+	
+	// 빠른 로그인
+	@GetMapping("quickLogin")
+	public String quickLogin(
+				@RequestParam("memberEmail") String memberEmail,
+				Model model,
+				RedirectAttributes ra
+			) {
+		
+		Member loginMember = service.quickLogin(memberEmail);
+		
+		if(loginMember == null) ra.addFlashAttribute("message", "해당 이메일이 존재하지 않습니다.");
+		else 					model.addAttribute("loginMember", loginMember);
+		
+		return "redirect:/"; 
+	}
+	
+	/** 회원 목록 조회
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("selectMemberList")
+	public List<Member> selectMemberList(Model model) {
+		
+		return service.selectMemberList();
+	}	
+	
+	/** 특정 회원 비밀번호 초기화
+	 * @param memberNo
+	 * @param member
+	 * @return
+	 */
+	@ResponseBody
+	@PutMapping("resetPw") //@GetMapping("resetPw")
+	public int resetPw(@RequestBody int inputNo) {
+		
+		return service.resetPw(inputNo);
+	}
+	
+	@ResponseBody
+	@GetMapping("restoration")
+	public int restoration(@RequestParam("memberNo") int memberNo) {
+		
+		return service.restoration(memberNo);
 	}
 
 }

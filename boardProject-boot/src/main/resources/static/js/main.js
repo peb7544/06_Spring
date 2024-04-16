@@ -75,3 +75,109 @@ if(loginForm != null) {
         }
     });
 }
+
+
+// ---------------------------------------------------------------------
+
+/* 빠른 로그인 */
+
+const qickLoginBtns = document.querySelectorAll(".qick-login");
+
+qickLoginBtns.forEach((item, index) => {
+    // item : 현재 반복 시 꺼내욘 객체
+    // index : 현재 반복 중인 인덱스
+
+    // qickLoginBtns 요소인 button 태그 하나씩 꺼내서 이벤트 리스너 추가
+    item.addEventListener("click", () =>{
+        const email = item.innerText; // 버튼에 작성된 이메일 얻어오기
+
+        location.href = "/member/quickLogin?memberEmail=" + email;
+    });
+});
+
+// ---------------------------------------------------------------------
+
+/* 회원 목록 조회(비동기) */
+
+const selectMemberList = document.querySelector("#selectMemberList");
+const memberList = document.querySelector("#memberList");
+
+selectMemberList.addEventListener("click", () => {
+    
+    fetch("/member/selectMemberList")
+    .then(resp => resp.text())
+    .then(result => {
+        console.log(JSON.parse(result))
+
+        const mList = JSON.parse(result);
+
+        for(let member of mList) {
+
+            const tr = document.createElement("tr");
+            const arr = ['memberNo', 'memberEmail', 'memberNickname', 'memberDelFl'];
+
+            for(let key of arr) {
+                const td = document.createElement("td");
+
+                td.innerText = member[key];
+                tr.append(td);
+                
+            }
+
+            // tbody의 자식으로 tr(한 행) 추가
+            memberList.append(tr);
+        }
+
+    });
+});
+
+// ---------------------------------------------------------------------
+
+/* 특정 회원 비밀번호 초기화(Ajax) */
+const resetMemberNo = document.querySelector("#resetMemberNo");
+const resetPw = document.querySelector("#resetPw");
+
+resetPw.addEventListener("click", () => {
+
+    // 입력받은 회원번호 얻어오기
+    const inputNo = resetMemberNo.value;
+
+    if(inputNo.trim().length == 0) {
+        alert("회원번호 입력해주세요.");
+        return;
+    }
+
+    //fetch("/member/resetPw?memberNo=" + inputResetMemberNo)
+    fetch("/member/resetPw", {
+        method : "PUT", // PUT : 수정 요청 방식
+        headers : {"Content-Type" : "application/json"},
+        body : inputNo
+    })
+    .then(resp => resp.text())
+    .then(result => {
+        // result == 컨트롤러부터 반환받아 TEXT로 파싱한 값
+        if(result > 0) alert("초기화 성공");
+        else alert("초기화 실패");
+    });
+});
+
+
+// ---------------------------------------------------------------------
+
+/* 특정 회원(회원번호) 탈퇴 복구(Ajax) */
+const restorationMemberNo = document.querySelector("#restorationMemberNo");
+const restorationBtn = document.querySelector("#restorationBtn");
+
+restorationBtn.addEventListener("click", () => {
+
+    const inputMemberNo = restorationMemberNo.value
+
+    fetch("/member/restoration?memberNo=" + inputMemberNo)
+    .then(resp => resp.text())
+    .then(result => {
+        if(result > 0) {
+            alert("복구 성공");
+            restorationMemberNo.value = "";
+        } else alert("복구 실패");
+    });
+});
