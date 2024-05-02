@@ -309,7 +309,7 @@ if (profile != null) {
         // loginMemberProfileImg : myPage-profile.html 하단에 script를 이용하여 타임리프로 선언해둔 변수
 
         // submit 해도 되는 경우 :
-        // 1. 기존 프로필 이미지가 없다가 새 이미지가 선택된 경우
+        // 1.   
         if (loginMemberProfileImg == null && statusCheck == 1) flag = false;
         // 2. 기존 프로필 이미지가 있다가 삭제한 경우
         if (loginMemberProfileImg != null && statusCheck == 0) flag = false;

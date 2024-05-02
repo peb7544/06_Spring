@@ -25,4 +25,25 @@ public interface BoardService {
 	 */
 	Board selectOne(Map<String, Integer> map);
 
+	/** 게시글 좋아요 체크/해제
+	 * @param map
+	 * @return
+	 */
+	int boardLike(Map<String, Integer> map);
+
+	/** 조회수 증가
+	 * @param boardNo
+	 * @return
+	 */
+	int updateReadCount(int boardNo);
+
+	/** 검색 서비스
+	 * @param paramMap
+	 * @param cp
+	 * @return map
+	 */
+	Map<String, Object> searchList(Map<String, Object> paramMap, int cp);
+
+	List<String> selectDbImageList();
+
 }

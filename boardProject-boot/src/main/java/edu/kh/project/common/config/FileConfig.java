@@ -47,10 +47,10 @@ public class FileConfig implements WebMvcConfigurer {
 	
 	//-----------------------------------------------------------------
 	// 게시판 이미지
-	@Value("my.board.resurce-handler")
+	@Value("${my.board.resurce-handler}")
 	private String boardResourceHandler;
 	
-	@Value("my.board.resurce-location")
+	@Value("${my.board.resurce-location}")
 	private String boardResourceLocation;
 	
 	// 요청 주소에 따라
