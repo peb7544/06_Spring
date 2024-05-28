@@ -1,4 +1,4 @@
-:root{
+  :root{
     --main-color : #455ba8;
   }
   
@@ -442,4 +442,14 @@
   
   .content-1 hr{
     margin: 20px 0;
+  }
+
+  /* 날씨 구분 */
+  #weather-section {
+    display: flex;
+    align-items: center;
+  }
+
+  .weather-info {
+    font-size: 20px;
   }
